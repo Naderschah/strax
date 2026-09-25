@@ -142,6 +142,33 @@ def sort_by_time_in_place(records):
 
     return records
 
+@export
+def stable_sort_by_time_in_place(x):
+    """
+    Stable in-place equivalent of sorting by x["time"].
+
+    Allocates only the argsort/permutation, not another full
+    structured-array copy.
+    """
+    if len(x) < 2:
+        return x
+
+    permutation = strax.stable_argsort(
+        x["time"],
+        kind="mergesort",
+    )
+
+    raw_bytes = x.view(np.uint8).reshape(
+        len(x),
+        x.dtype.itemsize,
+    )
+
+    apply_permutation_in_place(
+        raw_bytes,
+        permutation,
+    )
+
+    return x
 
 @numba.njit(nogil=True, cache=True)
 def _sort_by_time_and_channel(x, channel, max_channel_plus_one, sort_kind="mergesort"):
