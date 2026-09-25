@@ -115,7 +115,9 @@ def _cut_outside_hits(records, hits, new_recs, left_extension=2, right_extension
                 b_next = end_keep - samples_per_record
                 new_recs[next_ri]["data"][:b_next] = records[next_ri]["data"][:b_next]
 
-# RAM optimized helpers of cut outside hits 
+
+# RAM optimized helpers of cut outside hits
+
 
 @numba.njit(cache=True, nogil=True)
 def _build_hit_offsets(
@@ -150,6 +152,7 @@ def _build_hit_offsets(
         raise ValueError("Hit record_i is outside records or hits are not ordered")
 
     return offsets
+
 
 @numba.njit(cache=True, nogil=True)
 def _cut_outside_hits_inplace_core(
@@ -285,10 +288,11 @@ def cut_outside_hits_inplace(
     right_extension=15,
 ):
     """In-place equivalent of strax.cut_outside_hits for the PulseProcessing use case.
-    
+
     Hits must be ordered by ``record_i``, as produced by ``strax.find_hits``.
     Unlike ``cut_outside_hits``, this mutates ``records`` and returns the same
     array.
+
     """
 
     if not len(records):
@@ -313,5 +317,3 @@ def cut_outside_hits_inplace(
     )
 
     return records
-
-

@@ -43,6 +43,7 @@ def sort_by_time(x):
         x = stable_sort(x, order=("time",))
     return x
 
+
 @numba.njit(nogil=True)
 def apply_permutation_in_place(raw_bytes, permutation):
     """
@@ -80,14 +81,17 @@ def apply_permutation_in_place(raw_bytes, permutation):
 
             permutation[j] = j
             j = k
+
+
 @export
 def sort_by_time_in_place(records):
-    """ Records (channel, time) sorter
+    """Records (channel, time) sorter.
 
-    Same effective ordering as sort_by_time for normal DAQ chunks, applies the permutation
-    to the existing record allocation.
+    Same effective ordering as sort_by_time for normal DAQ chunks, applies the permutation to the
+    existing record allocation.
 
     Falls back to stock strax sorting if the packed int64 key is unsafe.
+
     """
     if len(records) < 2:
         return records
@@ -137,7 +141,6 @@ def sort_by_time_in_place(records):
     apply_permutation_in_place(raw_bytes, sort_i)
 
     return records
-
 
 
 @numba.njit(nogil=True, cache=True)

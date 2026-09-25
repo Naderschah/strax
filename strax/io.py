@@ -65,6 +65,7 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
     """Memory-efficient whole-frame LZ4 decompression for regular files.
 
     Reduces memory churn by placing lz4 into buffer rather than a new buffer every time
+
     """
     try:
         current = f.tell()
@@ -87,7 +88,7 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
 
         del view
 
-    # Empty files can be produced by redax 
+    # Empty files can be produced by redax
     # But these will not have a header
     if not compressed:
         return bytearray()
@@ -96,7 +97,6 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
         compressed,
         return_bytearray=True,
     )
-
 
 
 COMPRESSORS = dict(
