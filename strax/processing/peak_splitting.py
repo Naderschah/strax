@@ -183,13 +183,17 @@ class PeakSplitter:
             if np.any(new_peaks["length"] == 0):
                 raise ValueError("Want to add a new zero-length peak after splitting!")
 
-            #peaks = strax.sort_by_time(np.concatenate([peaks[~is_split], new_peaks]))
-            peaks = combine_unsplit_and_new(peaks, is_split, new_peaks,)
+            # peaks = strax.sort_by_time(np.concatenate([peaks[~is_split], new_peaks]))
+            peaks = combine_unsplit_and_new(
+                peaks,
+                is_split,
+                new_peaks,
+            )
             strax.stable_sort_by_time_in_place(peaks)
 
         return peaks
 
-    # Numba helper for concatenate replacement 
+    # Numba helper for concatenate replacement
     @staticmethod
     @numba.njit(nogil=True, cache=True)
     def combine_unsplit_and_new(
