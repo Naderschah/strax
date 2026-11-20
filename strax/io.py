@@ -65,7 +65,6 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
     """Memory-efficient whole-frame LZ4 decompression for regular files.
 
     Reduces memory churn by placing lz4 into buffer rather than a new buffer every time
-
     """
     try:
         current = f.tell()
@@ -76,20 +75,17 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
     else:
         compressed = bytearray(n_bytes)
         view = memoryview(compressed)
-
         offset = 0
         while offset < n_bytes:
             n = f.readinto(view[offset:])
-
             if not n:
                 raise EOFError(f"Unexpected EOF after {offset} of {n_bytes} bytes")
-
             offset += n
 
         del view
 
     # Empty files can be produced by redax
-    # But these will not have a header
+    # These will not have a header
     if not compressed:
         return bytearray()
 

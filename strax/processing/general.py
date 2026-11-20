@@ -48,9 +48,7 @@ def sort_by_time(x):
 def apply_permutation_in_place(raw_bytes, permutation):
     """
     Transform rows so that:
-
         new[i] = old[permutation[i]]
-
     permutation is destroyed in the process.
     """
     n, row_size = raw_bytes.shape
@@ -65,20 +63,15 @@ def apply_permutation_in_place(raw_bytes, permutation):
             tmp[b] = raw_bytes[start, b]
 
         j = start
-
         while True:
             k = permutation[j]
-
             if k == start:
                 for b in range(row_size):
                     raw_bytes[j, b] = tmp[b]
-
                 permutation[j] = j
                 break
-
             for b in range(row_size):
                 raw_bytes[j, b] = raw_bytes[k, b]
-
             permutation[j] = j
             j = k
 
@@ -121,7 +114,6 @@ def sort_by_time_in_place(records):
     sort_key -= t_min
     sort_key *= max_channel_plus_one
     sort_key += channel
-
     del channel
 
     # Same stable ordering we already used in our earlier test.
@@ -129,7 +121,6 @@ def sort_by_time_in_place(records):
         sort_key,
         kind="mergesort",
     )
-
     del sort_key
 
     # Zero-copy byte view of the existing structured array.
@@ -137,7 +128,6 @@ def sort_by_time_in_place(records):
         len(records),
         records.dtype.itemsize,
     )
-
     apply_permutation_in_place(raw_bytes, sort_i)
 
     return records
@@ -167,7 +157,6 @@ def stable_sort_by_time_in_place(x):
         raw_bytes,
         permutation,
     )
-
     return x
 
 

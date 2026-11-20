@@ -206,19 +206,15 @@ class PeakSplitter:
         for i in range(len(peaks)):
             if not is_split[i]:
                 n_unsplit += 1
-
         result = np.empty(
             n_unsplit + len(new_peaks),
             dtype=peaks.dtype,
         )
-
         j = 0
-
         for i in range(len(peaks)):
             if not is_split[i]:
                 result[j] = peaks[i]
                 j += 1
-
         for i in range(len(new_peaks)):
             result[j] = new_peaks[i]
             j += 1
