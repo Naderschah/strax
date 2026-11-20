@@ -183,7 +183,6 @@ class PeakSplitter:
             if np.any(new_peaks["length"] == 0):
                 raise ValueError("Want to add a new zero-length peak after splitting!")
 
-            # peaks = strax.sort_by_time(np.concatenate([peaks[~is_split], new_peaks]))
             peaks = self.combine_unsplit_and_new(
                 peaks,
                 is_split,

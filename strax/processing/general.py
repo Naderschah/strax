@@ -80,8 +80,7 @@ def apply_permutation_in_place(raw_bytes, permutation):
 def sort_by_time_in_place(records):
     """Records (channel, time) sorter.
 
-    Same effective ordering as sort_by_time for normal DAQ chunks, applies the permutation to the
-    existing record allocation.
+    Same effective ordering as sort_by_time for normal DAQ chunks, applies the permutation to the existing record allocation.
 
     Falls back to stock strax sorting if the packed int64 key is unsafe.
 
@@ -116,7 +115,6 @@ def sort_by_time_in_place(records):
     sort_key += channel
     del channel
 
-    # Same stable ordering we already used in our earlier test.
     sort_i = strax.stable_argsort(
         sort_key,
         kind="mergesort",
