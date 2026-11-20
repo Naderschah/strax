@@ -65,6 +65,7 @@ def _lz4_decompress(f, buffer_size=DECOMPRESS_BUFFER_SIZE):
     """Memory-efficient whole-frame LZ4 decompression for regular files.
 
     Reduces memory churn by placing lz4 into buffer rather than a new buffer every time
+
     """
     try:
         current = f.tell()

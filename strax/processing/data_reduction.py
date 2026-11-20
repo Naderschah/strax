@@ -242,6 +242,7 @@ def cut_outside_hits_inplace(
     Hits must be ordered by ``record_i``, as produced by ``strax.find_hits``.
     Unlike ``cut_outside_hits``, this mutates ``records`` and returns the same
     array.
+
     """
 
     if not len(records):
