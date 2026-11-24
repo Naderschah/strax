@@ -158,7 +158,11 @@ def _cut_outside_hits_inplace_core(
     right_extension,
     reduction_level,
 ):
-    """Zero samples outside hit-preservation windows directly in records."""
+    """
+    Zero samples outside hit-preservation windows in records.
+    Assumes sorting within fragment with right end points 
+    monotonically increasing, guaranteed by find_hits
+    """
 
     if not len(records):
         return
@@ -171,36 +175,31 @@ def _cut_outside_hits_inplace_core(
         # previous record extends across the boundary.
         prefix_end = 0
         prev_i = previous_record[r_i]
-        _pulse_has_previous_fragment = prev_i != NO_RECORD_LINK
+        _pulse_has_previous_fragment = (prev_i != NO_RECORD_LINK)
         if _pulse_has_previous_fragment:
-            for h_i in range(
-                hit_offsets[prev_i],
-                hit_offsets[prev_i + 1],
-            ):
+            first_hit_i = hit_offsets[prev_i]
+            last_hit_i = hit_offsets[prev_i + 1] - 1
+            if first_hit_i <= last_hit_i:
                 end_keep = hits[h_i]["right"] + right_extension
-                if end_keep > samples_per_record:
-                    b = end_keep - samples_per_record
-                    if b > samples_per_record:
-                        b = samples_per_record
-                    if b > prefix_end:
-                        prefix_end = b
+                prefix_end = min(
+                    samples_per_record,
+                    max(0, end_keep - samples_per_record),
+                )
 
         # Preserve end of this record if a hit in the next
         # record extends backwards across the boundary.
         suffix_start = samples_per_record
         next_i = next_record[r_i]
-        if next_i != NO_RECORD_LINK:
-            for h_i in range(
-                hit_offsets[next_i],
-                hit_offsets[next_i + 1],
-            ):
+        _pulse_has_following_fragment = (next_i != NO_RECORD_LINK)
+        if _pulse_has_following_fragment:
+            first_hit_i = hit_offsets[prev_i]
+            last_hit_i = hit_offsets[prev_i + 1] - 1
+            if first_hit_i <= last_hit_i:
                 start_keep = hits[h_i]["left"] - left_extension
-                if start_keep < 0:
-                    a = samples_per_record + start_keep
-                    if a < 0:
-                        a = 0
-                    if a < suffix_start:
-                        suffix_start = a
+                suffix_start = max(
+                    0,
+                    min(samples_per_record, samples_per_record + start_keep),
+                )
 
         # Preserve this record's own hit intervals and zero the
         # samples between them.
