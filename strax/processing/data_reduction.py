@@ -244,7 +244,7 @@ def cut_outside_hits_inplace(
     If you pass an incomplete (e.g. cut) set of records, we will not save data around hits found in
     the removed records, even if this stretches into records that you did pass.
 
-    Hits must be ordered by ``record_i``, as produced by ``strax.find_hits``.
+    Hits must be ordered by ``record_i`` (i-th hit), as produced by ``strax.find_hits``.
     Unlike ``cut_outside_hits``, this mutates ``records`` and returns the same
     array.
     """
