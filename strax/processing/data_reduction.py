@@ -134,7 +134,11 @@ def _build_hit_offsets(
     h_i = 0
     for r_i in range(n_records):
         offsets[r_i] = h_i
-        while h_i < len(hits) and hits[h_i]["record_i"] == r_i:
+        _contains_hits_for_current_record = (
+            (h_i < len(hits)) 
+            and (hits[h_i]["record_i"] == r_i)
+        )
+        while _contains_hits_for_current_record:
             h_i += 1
     offsets[n_records] = h_i
     if h_i != len(hits):
