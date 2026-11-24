@@ -134,10 +134,7 @@ def _build_hit_offsets(
     h_i = 0
     for r_i in range(n_records):
         offsets[r_i] = h_i
-        _contains_hits_for_current_record = (
-            (h_i < len(hits)) 
-            and (hits[h_i]["record_i"] == r_i)
-        )
+        _contains_hits_for_current_record = (h_i < len(hits)) and (hits[h_i]["record_i"] == r_i)
         while _contains_hits_for_current_record:
             h_i += 1
     offsets[n_records] = h_i
@@ -158,10 +155,11 @@ def _cut_outside_hits_inplace_core(
     right_extension,
     reduction_level,
 ):
-    """
-    Zero samples outside hit-preservation windows in records.
-    Assumes sorting within fragment with right end points 
-    monotonically increasing, guaranteed by find_hits
+    """Zero samples outside hit-preservation windows in records.
+
+    Assumes sorting within fragment with right end points monotonically increasing, guaranteed by
+    find_hits
+
     """
 
     if not len(records):
@@ -175,7 +173,7 @@ def _cut_outside_hits_inplace_core(
         # previous record extends across the boundary.
         prefix_end = 0
         prev_i = previous_record[r_i]
-        _pulse_has_previous_fragment = (prev_i != NO_RECORD_LINK)
+        _pulse_has_previous_fragment = prev_i != NO_RECORD_LINK
         if _pulse_has_previous_fragment:
             first_hit_i = hit_offsets[prev_i]
             last_hit_i = hit_offsets[prev_i + 1] - 1
@@ -190,7 +188,7 @@ def _cut_outside_hits_inplace_core(
         # record extends backwards across the boundary.
         suffix_start = samples_per_record
         next_i = next_record[r_i]
-        _pulse_has_following_fragment = (next_i != NO_RECORD_LINK)
+        _pulse_has_following_fragment = next_i != NO_RECORD_LINK
         if _pulse_has_following_fragment:
             first_hit_i = hit_offsets[prev_i]
             last_hit_i = hit_offsets[prev_i + 1] - 1
@@ -238,8 +236,7 @@ def cut_outside_hits_inplace(
     left_extension=3,
     right_extension=20,
 ):
-    """
-    Return records with waveforms zeroed if not within left_extension or right_extension of hits.
+    """Return records with waveforms zeroed if not within left_extension or right_extension of hits.
     These extensions properly account for breaking of pulses into records.
 
     If you pass an incomplete (e.g. cut) set of records, we will not save data around hits found in
@@ -248,6 +245,7 @@ def cut_outside_hits_inplace(
     Hits must be ordered by ``record_i`` (i-th hit), as produced by ``strax.find_hits``.
     Unlike ``cut_outside_hits``, this mutates ``records`` and returns the same
     array.
+
     """
 
     if not len(records):
