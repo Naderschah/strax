@@ -209,24 +209,21 @@ def _cut_outside_hits_inplace_core(
             hit_offsets[r_i],
             hit_offsets[r_i + 1],
         ):
-            a = hits[h_i]["left"] - left_extension
-            b = hits[h_i]["right"] + right_extension
-            if a < 0:
-                a = 0
-            if b > record_length:
-                b = record_length
-            if b <= a:
-                continue
-            if a >= suffix_start:
+            hit = hits[h_i]
+            preserve_start = max(
+                0,
+                hit["left"] - left_extension,
+            )
+            preserve_end = min(
+                record_length,
+                suffix_start,
+                hit["right"] + right_extension,
+            )
+            if preserve_start >= suffix_start:
                 break
-            if b > suffix_start:
-                b = suffix_start
-            if b <= cursor:
-                continue
-            if a > cursor:
-                r["data"][cursor:a] = 0
-            if b > cursor:
-                cursor = b
+            if cursor < preserve_start:
+                r["data"][cursor:preserve_start] = 0
+            cursor = max(cursor, preserve_end)
 
         if cursor < suffix_start:
             r["data"][cursor:suffix_start] = 0
