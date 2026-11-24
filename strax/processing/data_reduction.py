@@ -237,12 +237,16 @@ def cut_outside_hits_inplace(
     left_extension=3,
     right_extension=20,
 ):
-    """In-place equivalent of strax.cut_outside_hits for the PulseProcessing use case.
+    """
+    Return records with waveforms zeroed if not within left_extension or right_extension of hits.
+    These extensions properly account for breaking of pulses into records.
+
+    If you pass an incomplete (e.g. cut) set of records, we will not save data around hits found in
+    the removed records, even if this stretches into records that you did pass.
 
     Hits must be ordered by ``record_i``, as produced by ``strax.find_hits``.
     Unlike ``cut_outside_hits``, this mutates ``records`` and returns the same
     array.
-
     """
 
     if not len(records):
