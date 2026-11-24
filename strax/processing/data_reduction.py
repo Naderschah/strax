@@ -234,8 +234,8 @@ def _cut_outside_hits_inplace_core(
 def cut_outside_hits_inplace(
     records,
     hits,
-    left_extension=2,
-    right_extension=15,
+    left_extension=3,
+    right_extension=20,
 ):
     """In-place equivalent of strax.cut_outside_hits for the PulseProcessing use case.
 
