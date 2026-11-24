@@ -171,8 +171,8 @@ def _cut_outside_hits_inplace_core(
         # previous record extends across the boundary.
         prefix_end = 0
         prev_i = previous_record[r_i]
-        _no_previous_fragment = prev_i != NO_RECORD_LINK
-        if _no_previous_fragment:
+        _pulse_has_previous_fragment = prev_i != NO_RECORD_LINK
+        if _pulse_has_previous_fragment:
             for h_i in range(
                 hit_offsets[prev_i],
                 hit_offsets[prev_i + 1],
